@@ -5,7 +5,11 @@
  */
 package vista;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import modelo.Cliente;
 
 /**
  *
@@ -18,8 +22,17 @@ public class Inicio extends javax.swing.JFrame {
      */
     public Inicio() {
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(null); 
     }
+    
+     @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("imagenes/wolff.png"));
+        return retValue;
+    }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,6 +66,7 @@ public class Inicio extends javax.swing.JFrame {
         jButtonSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
 
         jPanelDatos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(189, 189, 189), new java.awt.Color(226, 226, 226), new java.awt.Color(54, 54, 54), new java.awt.Color(101, 101, 101)));
         jPanelDatos.setName("");
@@ -217,27 +231,50 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jButtonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarMouseClicked
         
+        boolean correcto = true;
         String nombre, ape, apeDos, estadoC, genero;
         
         int edad;
         
+        // variable Nombre
+        
         nombre = jTextFieldNombre.getText();
+        
+        if (nombre == ""){
+            correcto = false;
+        }
+        // Se permite no poner apellidos
         ape = jTextFieldPApellido.getText();
         apeDos = jTextFieldSApellido.getText();
+        // Esta selecionado automaticamente
         estadoC = jComboBoxECivil.getSelectedItem().toString();
         
-        if (jRadioButtonFemale.isSelected() == true){
-            genero = "Femenino";
+        
+          // Variable genero 
+          
+        if (!jRadioButtonFemale.isSelected()&&!jRadioButtonMale.isSelected()){
+            correcto = false;
         } else {
-            genero = "Masculino";
+              
+            if (jRadioButtonFemale.isSelected() == true){
+                genero = "Femenino";
+            } else {
+                genero = "Masculino";
+            }  
         }
         
+        // Variable edad
         try {
             edad = Integer.parseInt(jTextFieldEdad.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Introduzca un numero", "Error 998/8B types do not match", 2);
+            correcto = false;
         }
         
+        if (correcto == true){
+            // Aqui se crea el registro del tipo Cliente
+        } else {
+             JOptionPane.showMessageDialog(rootPane, "Campos mal introducido", "Error 998/8B", 2);
+        }
         
     }//GEN-LAST:event_jButtonGuardarMouseClicked
 
@@ -284,8 +321,7 @@ public class Inicio extends javax.swing.JFrame {
     
     
     
-    
-    
+    private ArrayList<Cliente> vCliente;
     private javax.swing.DefaultListModel<String> mDatos;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupSexo;
