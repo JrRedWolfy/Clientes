@@ -5,6 +5,7 @@
  */
 package vista;
 
+import controlador.IODatos;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class Inicio extends javax.swing.JFrame {
     public Inicio() {
         initComponents();
         this.setLocationRelativeTo(null); 
+        
+        vCliente = controlador.IODatos.cargarDatos();
     }
     
      @Override
@@ -60,8 +63,8 @@ public class Inicio extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jTextFieldEdad = new javax.swing.JTextField();
         jPanelMostrar = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jListMostrar = new javax.swing.JList<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextAreaMostrar = new javax.swing.JTextArea();
         jButtonGuardar = new javax.swing.JButton();
         jButtonSalir = new javax.swing.JButton();
 
@@ -162,23 +165,25 @@ public class Inicio extends javax.swing.JFrame {
 
         jPanelMostrar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(189, 189, 189), new java.awt.Color(207, 207, 207), new java.awt.Color(48, 48, 48), new java.awt.Color(101, 101, 101)));
 
-        jScrollPane2.setViewportView(jListMostrar);
+        jTextAreaMostrar.setColumns(20);
+        jTextAreaMostrar.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaMostrar);
 
         javax.swing.GroupLayout jPanelMostrarLayout = new javax.swing.GroupLayout(jPanelMostrar);
         jPanelMostrar.setLayout(jPanelMostrarLayout);
         jPanelMostrarLayout.setHorizontalGroup(
             jPanelMostrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMostrarLayout.createSequentialGroup()
+            .addGroup(jPanelMostrarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         jPanelMostrarLayout.setVerticalGroup(
             jPanelMostrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMostrarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jButtonGuardar.setText("Guardar");
@@ -222,7 +227,7 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(jButtonSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelMostrar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanelMostrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -232,9 +237,9 @@ public class Inicio extends javax.swing.JFrame {
     private void jButtonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarMouseClicked
         
         boolean correcto = true;
-        String nombre, ape, apeDos, estadoC, genero;
+        String nombre, ape, apeDos, estadoC, genero="";
         
-        int edad;
+        int edad=0;
         
         // variable Nombre
         
@@ -270,8 +275,13 @@ public class Inicio extends javax.swing.JFrame {
             correcto = false;
         }
         
+        
         if (correcto == true){
-            // Aqui se crea el registro del tipo Cliente
+            
+            Cliente c = new Cliente(nombre, ape, apeDos, estadoC, genero, edad);
+            vCliente.add(c);
+            int tam = vCliente.size();
+            jTextAreaMostrar.setText(jTextAreaMostrar.getText() + vCliente.get(tam).toString());
         } else {
              JOptionPane.showMessageDialog(rootPane, "Campos mal introducido", "Error 998/8B", 2);
         }
@@ -279,7 +289,10 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGuardarMouseClicked
 
     private void jButtonSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonSalirMouseClicked
-       this.dispose();
+       
+        IODatos.guardarClientes(vCliente);
+        
+        this.dispose();
     }//GEN-LAST:event_jButtonSalirMouseClicked
 
     /**
@@ -322,7 +335,6 @@ public class Inicio extends javax.swing.JFrame {
     
     
     private ArrayList<Cliente> vCliente;
-    private javax.swing.DefaultListModel<String> mDatos;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupSexo;
     private javax.swing.JButton jButtonGuardar;
@@ -335,12 +347,12 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList<String> jListMostrar;
     private javax.swing.JPanel jPanelDatos;
     private javax.swing.JPanel jPanelMostrar;
     private javax.swing.JRadioButton jRadioButtonFemale;
     private javax.swing.JRadioButton jRadioButtonMale;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextAreaMostrar;
     private javax.swing.JTextField jTextFieldEdad;
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldPApellido;
